@@ -1,0 +1,8 @@
+[
+ {"id":"pm-kisan","name":"PM-KISAN","summary":"Income support for farmer families.","min_age":18,"max_age":120,"max_income":null,"occupations":["farmer"],"gender":"any"},
+ {"id":"sukanya","name":"Sukanya Samriddhi Yojana","summary":"Savings scheme for a girl child's future.","min_age":0,"max_age":10,"max_income":null,"occupations":["any"],"gender":"female"},
+ {"id":"apy","name":"Atal Pension Yojana","summary":"Pension scheme for people who work without a pension.","min_age":18,"max_age":40,"max_income":null,"occupations":["any"],"gender":"any"},
+ {"id":"mudra","name":"PM Mudra Yojana","summary":"Loans for small businesses.","min_age":18,"max_age":120,"max_income":null,"occupations":["business"],"gender":"any"},
+ {"id":"scholarship","name":"National Scholarship","summary":"Financial help for students.","min_age":14,"max_age":40,"max_income":250000,"occupations":["student"],"gender":"any"},
+ {"id":"jandhan","name":"PM Jan Dhan Yojana","summary":"Basic bank account with no minimum balance.","min_age":10,"max_age":120,"max_income":null,"occupations":["any"],"gender":"any"}
+]

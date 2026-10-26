@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SchemeSathi</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#E6F0F2;color:#1A2B34}
+header{background:#0F4C5C;color:#fff;padding:20px}
+header h1{margin:0;font-size:24px}
+header p{margin:6px 0 0;color:#9FC5CC}
+main{padding:16px;max-width:600px;margin:auto}
+label{display:block;margin-top:14px;font-weight:bold}
+input,select{width:100%;padding:12px;margin-top:6px;font-size:16px;border:1px solid #9FC5CC;border-radius:8px;box-sizing:border-box}
+#lang{margin-top:12px;background:#fff}
+button{width:100%;margin-top:20px;padding:14px;font-size:18px;background:#F2A104;color:#1A2B34;border:0;border-radius:8px;font-weight:bold}
+.card{background:#fff;border-radius:10px;padding:14px;margin-top:12px}
+.card h3{margin:0 0 6px;color:#0F4C5C}
+</style>
+</head>
+<body>
+<header>
+<h1>SchemeSathi</h1>
+<p data-t="tagline"></p>
+<select id="lang" onchange="setLang(this.value)">
+<option value="en">English</option>
+<option value="ta">தமிழ்</option>
+<option value="hi">हिन्दी</option>
+<option value="ur">اردو</option>
+</select>
+</header>
+<main>
+<label data-t="age"></label>
+<input id="age" type="number" step="1" placeholder="30">
+<label data-t="income"></label>
+<input id="income" type="number" step="1" placeholder="100000">
+<label data-t="occupation"></label>
+<select id="occupation">
+<option value="farmer" data-t="farmer"></option>
+<option value="student" data-t="student"></option>
+<option value="business" data-t="business"></option>
+<option value="other" data-t="other"></option>
+</select>
+<label data-t="gender"></label>
+<select id="gender">
+<option value="male" data-t="male"></option>
+<option value="female" data-t="female"></option>
+<option value="other" data-t="other"></option>
+</select>
+<button onclick="findSchemes()" data-t="button"></button>
+<div id="results"></div>
+</main>
+<script src="/static/lang.js"></script>
+<script>
+var currentLang = "en";
+var lastList = null;
+function t(key) { return LANG[currentLang][key]; }
+function setLang(code) {
+  currentLang = code;
+  document.body.dir = (code === "ur") ? "rtl" : "ltr";
+  document.documentElement.lang = code;
+  document.querySelectorAll("[data-t]").forEach(function (el) {
+    el.textContent = LANG[code][el.getAttribute("data-t")];
+  });
+  if (lastList) render(lastList);
+}
+function render(list) {
+  var box = document.getElementById("results");
+  if (list.length === 0) {
+    box.innerHTML = "<div class='card'>" + t("none") + "</div>";
+    return;
+  }
+  var html = "<h2>" + t("found").replace("{n}", list.length) + "</h2>";
+  list.forEach(function (s) {
+    var tx = (SCHEME_TEXT[s.id] || {})[currentLang] || [s.name, s.summary];
+    html += "<div class='card'><h3>" + tx[0] + "</h3><p>" + tx[1] + "</p></div>";
+  });
+  box.innerHTML = html;
+}
+function findSchemes() {
+  var params = new URLSearchParams({
+    age: document.getElementById("age").value || 0,
+    income: document.getElementById("income").value || 0,
+    occupation: document.getElementById("occupation").value,
+    gender: document.getElementById("gender").value
+  });
+  fetch("/check?" + params)
+    .then(function (r) { return r.json(); })
+    .then(function (list) { lastList = list; render(list); });
+}
+setLang("en");
+</script>
+</body>
+</html>
