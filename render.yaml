@@ -1,0 +1,16 @@
+# Exported from Render on 2026-10-28T01:04:23Z
+version: "1"
+projects:
+- name: My project
+  environments:
+  - name: Production
+    services:
+    - type: web
+      name: schemesathi
+      runtime: python
+      repo: https://github.com/AB993GIFH/schemesathi
+      plan: free
+      region: oregon
+      buildCommand: pip install -r requirements.txt
+      startCommand: gunicorn app:app
+      autoDeployTrigger: commit
